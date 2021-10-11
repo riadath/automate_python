@@ -1,7 +1,0 @@
-age = int(input("How old are you nigga? : "))
-height = int(input("How fucking tall are you nigga? : "))
-weight = int(input("How fat are you nigga? : "))
-name = input("What the fuck is your name nigga? : ")
-print(f"So you are {name}. I've heard about you and your {age}",end=" ")
-print(f"and also about your {height} and {weight}")
-print("Who the hell are you? ",input())
