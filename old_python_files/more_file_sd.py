@@ -1,0 +1,1 @@
+open("new_file.txt",'w').write(open("input_file.c").read())

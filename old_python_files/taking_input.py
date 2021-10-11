@@ -1,0 +1,7 @@
+print("How fucking old are you nigga",end = " ")
+age = int(input())
+print("How fucking fat are you nigga",end = " ")
+weight = int(input())
+print("How fucking tall are you nigga",end = " ")
+height = float(input())
+print(f"you bloody {age} years old fat {weight} pound {height} tall bastard")
