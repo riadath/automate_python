@@ -7,21 +7,22 @@ def print_mat(var_list,matrix):
             print(round(j,2),end="    ")
         print("",end="\n")
 
-def augmented_matrix(input_list):
-    eq_list,var_list,constant_values,var_values,mat_size,matrix = "",[],[],{},0,[]
+def augmented_matrix(input_list): 
+    eq_list,var_list,constant_values,var_values,mat_size,matrix = [],[],[],{},0,[]
     for str in input_list:
-        str = str.replace(" ","")
+        str = str.replace(" ","").strip()
         if str != "":
             mat_size += 1
             if str[0] != '-':
                 str = '+' + str
-            eq_list += '\n' + str
+            eq_list.append(str)
+            
     #retrieving variable names from the equations
     pattern = re.compile(r'(\d+|[+-]\d*|-?\d*\.\d+)([a-zA-Z]+\d*)')
-    matches = pattern.finditer(eq_list)
-    for i in matches:
-        var_list.append(i.group(2))
-
+    for t_str in eq_list:
+        matches = pattern.finditer(t_str)
+        for i in matches:
+            var_list.append(i.group(2))
     #duplicate removal and lexicographical sorting     
     var_list = list(dict.fromkeys(var_list))
     var_list.sort()
@@ -30,29 +31,32 @@ def augmented_matrix(input_list):
     for var in var_list:    
         var_values[var] = []
         pattern = re.compile(r'((\d+)|([+-]\d*)|(-?\d*\.\d+))(%s)'%var)
-        matches = pattern.finditer(eq_list)
-        for i in matches:
-            temp_val = i.group(1)
-            if temp_val == '-':
-                temp_val = '-1'
-            if temp_val == '+' or temp_val == "":
-                temp_val = '1'
-                    
-            if temp_val[0] == '+':
-                temp_val = temp_val[1:len(temp_val)]
-            var_values[var].append(temp_val)
+        for t_str in eq_list:
+            matches = pattern.finditer(t_str)
+            for i in matches:
+                temp_val = i.group(1)
+                if temp_val == '-':
+                    temp_val = '-1'
+                if temp_val == '+' or temp_val == "":
+                    temp_val = '1'
+                        
+                if temp_val[0] == '+':
+                    temp_val = temp_val[1:len(temp_val)]
+                var_values[var].append(temp_val)
             
-        if len(var_values[var]) == 0:
-            var_values[var].append('0')
+            if len(var_values[var]) == 0:
+                var_values[var].append('0')
     for key in var_values.keys():
         while len(var_values[key]) < mat_size:
             var_values[key].append('0')
+    print(var_values)
 
     #retrieving constant values from the equations
     pattern = re.compile(r'=((-?\d*\.\d+)|(\d+)|(-\d+))')
-    matches = pattern.finditer(eq_list)
-    for i in matches:
-        constant_values.append(i.group(1))
+    for t_str in eq_list:
+        matches = pattern.finditer(t_str)
+        for i in matches:
+            constant_values.append(i.group(1))
     
 
     for i in range(0,mat_size):
@@ -107,7 +111,20 @@ def reduced_row_echelon(matrix):
     matrix = sort_rows(matrix)
     return matrix
 
-
+def mat_solution(matrix):
+    var_num = len(matrix[0]) - 1;
+    for i in range(len(matrix),var_num):
+        t_list = []
+        for k in range(0,var_num + 1):
+            t_list.append(0.0)
+        matrix.append(t_list)
+    
+    sol_list = ()
+    for i in range(0,len(matrix)):
+        for k in range(0,len(matrix)):
+           
+                
+    return matrix
 
 #taking input
 file_in = open("in.txt")
@@ -126,3 +143,4 @@ print_mat(var_list,row_echelon(matrix))
 print("Reduced Row Echelon Form")
 print_mat(var_list,reduced_row_echelon(matrix))
 
+print_mat(var_list, mat_solution(matrix))
