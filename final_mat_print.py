@@ -1,5 +1,4 @@
-import re,pprint
-pp = pprint.PrettyPrinter(indent = 4)
+import re
 
 def print_mat(var_list,matrix):
     print('[' + ' '.join([str(elem) for elem in var_list]) + ']')
@@ -55,7 +54,7 @@ def augmented_matrix(input_list):
         for i in matches:
             constant_values.append(i.group(1))
     
-    # print(eq_list,var_list,var_values)
+    print(eq_list,var_list,var_values)
 
     for i in range(0,mat_size):
         t_list = []
@@ -65,71 +64,7 @@ def augmented_matrix(input_list):
         matrix.append(t_list)
     return var_list,matrix
 
-def sort_rows(matrix):
-    mat_size = len(matrix)
-    for i in range(0,mat_size - 1):
-        for j in range(0,mat_size - i - 1):
-            pos_J,pos_J1 = 100000,100000
-            for k in range(0,len(matrix[j])-1):
-                if matrix[j][k] != 0:
-                    pos_J = k
-                    break
-            for k in range(0,len(matrix[j + 1])-1):
-                if matrix[j + 1][k] != 0:
-                    pos_J1 = k
-                    break
-            if pos_J > pos_J1:
-                matrix[j],matrix[j + 1] = matrix[j + 1],matrix[j]
-    return matrix
 
-def row_echelon(matrix):
-    matrix = sort_rows(matrix)
-    for i in range(0,len(matrix)):
-        for j in range(0,i):
-            mult = matrix[i][j]
-            for k in range(0,len(matrix[i])):
-                matrix[i][k] -= (matrix[j][k] * mult)
-        div = 0
-        for k in range(0,len(matrix[i])):
-            if div != 0:
-                matrix[i][k] /= div
-            if matrix[i][k] != 0 and div == 0:
-                div = matrix[i][k]
-                matrix[i][k] = 1
-    matrix = sort_rows(matrix)
-    return matrix
-            
-def reduced_row_echelon(matrix):
-    matrix = row_echelon(matrix);
-    for i in range(0,len(matrix) - 1):
-        for j in range(i + 1,len(matrix)):
-            mult = matrix[i][j]
-            for k in range(0,len(matrix[i])):
-                matrix[i][k] -= (matrix[j][k] * mult)
-    matrix = sort_rows(matrix)
-    return matrix
-
-def mat_solution(var_list,matrix):
-    matrix = reduced_row_echelon(matrix)
-    var_num = len(matrix[0]) - 1;
-    for i in range(len(matrix),var_num):
-        t_list = []
-        for k in range(0,var_num + 1):
-            t_list.append(0.0)
-        matrix.append(t_list)
-    
-    sol_list = {}
-    for i in range(0,len(matrix)):
-        flag,t_list = False,[]
-        for k in range(0,len(matrix[i])-1):
-            if matrix[i][k] != 0.0:
-                flag = True
-            if k != i and matrix[i][k] != 0.0 :
-                t_list.append((var_list[k],-1 * matrix[i][k]))
-        sol_list[var_list[i]] = (t_list,matrix[i][len(matrix[i]) - 1],flag);
-    
-    pp.pprint(sol_list)
-    
 #taking input
 file_in = open("in.txt")
 inp_list,t_str = [],"#"
@@ -141,10 +76,4 @@ while t_str != "" or t_str == "#":
 var_list,matrix = augmented_matrix(inp_list)
 
 print("Augmented Matrix")
-print_mat(var_list,matrix)          
-print("Row Echelon Form")
-print_mat(var_list,row_echelon(matrix))
-print("Reduced Row Echelon Form")
-print_mat(var_list,reduced_row_echelon(matrix))
-
-mat_solution(var_list,matrix)
+print_mat(var_list,matrix)       
