@@ -111,24 +111,34 @@ def reduced_row_echelon(matrix):
     matrix = row_echelon(matrix)
 
     for i in range(len(matrix)):
-        if matrix[i][i]:
+        pos = -1
+        for k in range(len(matrix[i])):
+            if matrix[i][k] != 0:
+                pos = k
+                break
+        if pos != -1:
             for j in range(i):
-                if matrix[j][i] != 0:
-                    mult = matrix[j][i]
+                if matrix[j][pos] != 0:
+                    mult = matrix[j][pos]
                     for k in range(len(matrix[j])):
                         matrix[j][k] -= (mult * matrix[i][k])
     return matrix
 
 def mat_solution(var_list,matrix):
     matrix = reduced_row_echelon(matrix)
+    t_matrix = []
+    t_list = []
     
-    var_num = len(matrix[0]) - 1
-    for i in range(len(matrix),var_num):
-        t_list = []
-        for k in range(0,var_num + 1):
-            t_list.append(0.0)
-        matrix.append(t_list)
-    
+    for k in range(0,len(var_list) + 1):
+        t_list.append(0.0)
+    for i in range(len(matrix)):
+        if matrix[i][i] == 1 or len(matrix) == len(var_list):
+            t_matrix.append(matrix[i])
+        else:
+            t_matrix.append(t_list)
+            t_matrix.append(matrix[i])
+    matrix = t_matrix
+    # pp.pprint(matrix)
     soln_list = {}
     for i in range(len(matrix)):
         flag,t_list = False,[]
@@ -181,5 +191,7 @@ def main():
     print("___________Reduced Row Echelon Form___________\n")
     print_mat(var_list,reduced_row_echelon(copy.deepcopy(g_matrix)))
     mat_solution(var_list,copy.deepcopy(g_matrix))
+
+
 
 main()
