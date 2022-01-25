@@ -1,1 +1,1 @@
-replace(" ","")
+        pp.pprint(matrix)  
